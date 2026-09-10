@@ -16,13 +16,11 @@
 
     <!-- 页面头图：导航 -->
     <header class="bg-white shadow-md sticky top-0 z-50">
-        <!-- 1. 外层容器加上 relative，并垂直居中 -->
         <div class="container relative mx-auto px-6 py-4 flex flex-col items-center justify-center text-center gap-2">
             <div class="text-2xl font-bold text-blue-600">Hardware Logistics Survival Playbook</div> 
             <div class="text-gray-500 max-w-4xl">From surviving endless trade-offs where compromise isn't an option (on a tap-water budget) 
                 --> To driving rational, high-ROI trade-offs that power real growth.</div>
             
-            <!-- 2. 邮箱绝对定位在右上角，避开长副标题 -->
             <div class="md:absolute md:right-6 md:top-4 text-blue-500 font-medium cursor-pointer">
                 fan.he.2023@marshall.usc.edu
             </div>
@@ -55,14 +53,12 @@
                 Exact geospatial coordinates (Latitude & Longitude) are captured for every site to drive route and modal optimization.<br>
             </div>
             
-            <!-- 可视化客户地理分布 -->
             <h3 class="text-lg font-semibold mb-2">Map</h3>
             <iframe src="assets/01_Sales_Pipeline.html" class="chart-iframe"></iframe>
 
             <div class="mb-8 mt-6">
-            <!-- Table 客户数据 -->
-            <h3 class="text-lg font-semibold mb-2">Dataset</h3>
-            <iframe src="assets/ods_d01_all_cust_loc_table.html" class="chart-iframe" style="height: 300px;"></iframe>
+                <h3 class="text-lg font-semibold mb-2">Dataset</h3>
+                <iframe src="assets/ods_d01_all_cust_loc_table.html" class="chart-iframe" style="height: 300px;"></iframe>
             </div>
         </div>
     </section>
@@ -70,9 +66,8 @@
     <!-- 模块3：LTL COST Baseline -->
     <section class="container mx-auto px-6 py-12">
         <div class="bg-white p-8 rounded-xl shadow-sm">
-        <h2 class="text-2xl font-bold mb-4">End: Logistics Cost Baseline</h2>
+            <h2 class="text-2xl font-bold mb-4">End: Logistics Cost Baseline</h2>
             <div class="mb-8"></div>
-            <!-- LTL 成本作为BASELINE 可视化 -->
             <h3 class="text-lg font-semibold mb-2">LTL Cost as a Baseline</h3>
             <div class="text-gray-700 leading-relaxed mb-6">
                 <b>Let's skip to the final outcome: the waybill statistics. </b><br>
@@ -84,7 +79,6 @@
             <iframe src="assets/APP_VRP_Visualization_Baseline_V1.html" class="chart-iframe"></iframe>
 
             <div class="mb-8 mt-6">
-                <!-- Table 物流rate card -->
                 <h3 class="text-lg font-semibold mb-2">3PL Rate Card (Estimated)</h3>
                 <div class="text-gray-700 leading-relaxed mb-6">
                     <b>Dynamic Multi-Tier Rate Card Engine: </b><br>
@@ -102,7 +96,6 @@
         <div class="bg-white p-8 rounded-xl shadow-sm">
             <h2 class="text-2xl font-bold mb-4">The Magic in the Middle: MINI IBP</h2>
             <h3 class="text-lg font-semibold mb-2">A Typical IBP Workflow for ATO</h3>
-            <!-- 本地图片名称映射 -->
             <img src="assets/IBP_ATO.png" alt="IBP ATO 图片" class="w-full rounded-lg shadow-md">
             <div class="text-gray-700 leading-relaxed mb-6 mt-4">
                 Between capturing market leads and fulfilling orders, there lies a chain of critical processes and strategic decisions—ranging from 
@@ -124,6 +117,7 @@
                         Even if a site has to wait, shipments only release when full container threshold is met. <br>
                         <b>---Passive Consolidation: </b>Applies a flexible logistics posture—releasing orders as soon as loads are ready without holding up delivery schedules, while squeezing out freight cost savings on the fly.<br>
             </div>
+        </div>
     </section>
 
     <!-- 模块5：Mini SIOP for Constrained Supply -->
@@ -152,7 +146,7 @@
             <button id="btn-proactive" onclick="switchTab('proactive')" class="bg-gray-300 text-gray-700 px-8 py-3 rounded-full font-bold hover:bg-gray-400 transition">Proactive Logistics Optimization</button>
         </div>
 
-        <!-- Passive 内容区 -->
+        <!-- ==================== 【Passive 内容区】 ==================== -->
         <div id="panel-passive" class="bg-white p-8 rounded-xl shadow-sm space-y-8">
             
             <div class="space-y-6">
@@ -235,7 +229,6 @@
                 </p>
             </div>
 
-            <!-- 内嵌图表 -->
             <div class="space-y-6">
                 <h3 class="text-xl font-bold">💡 Logistics Cost Analysis</h3>
                 <p class="text-gray-700">
@@ -250,21 +243,22 @@
                 <b>-Backlog Feature Candidate (Load Optimization): </b><br>
                 --Test shifting orders with a Must-Ship-Date of T+1 forward to T to evaluate its impact on container utilization and overall cost savings.<br>
                 </p>
+                <!-- ⚠️ 注意：这里原本有一个多余的 </div> 导致了灾难，已修正！ -->
                 <div style="overflow-x: auto; width: 100%;"></div>
                     <iframe src="assets/APP_VRP_Visualization_A.html" class="chart-iframe" style="height: 1000px;"></iframe>
-                </div>
             </div>
 
-            <!-- 图片占位 -->
             <div class="space-y-6">
                 <h3 class="text-xl font-bold">💡 Scheduling Gantt Chart</h3>
                 <p class="text-gray-700">
                     Reserved for Gantt chart, updating soon.
                 </p>
             </div>
-        </div>
 
-        <!-- Proactive 内容区 (默认隐藏) -->
+        </div> <!-- ✅ 正确闭合 panel-passive！ -->
+
+
+        <!-- ==================== 【Proactive 内容区 (默认隐藏)】 ==================== -->
         <div id="panel-proactive" class="bg-white p-8 rounded-xl shadow-sm space-y-8 hidden">
             
             <div class="space-y-6">
@@ -278,7 +272,6 @@
                   <b>-Real-World Friction:</b> While mathematically optimal, this model hinges on internal S&OP synchronization 
                   and external customer concession to accept carrier-driven delivery schedules rather than fixed, client-preferred windows.<br>
                 </p>
-
             </div>
 
             <div class="space-y-6">
@@ -320,7 +313,6 @@
                 </p>
             </div>
 
-            <!-- Proactive 特有的图表 -->
             <div class="space-y-6">
                 <h3 class="text-xl font-bold">💡 Logistics Cost Analysis</h3>
                 <p class="text-gray-700">
@@ -333,31 +325,26 @@
                 Rather than relying on a rigid baseline, we can derive the dynamic dispatch sequence based on the realistic level of proactive consolidation achievable on the ground.
                 </p>
 
-                <!-- 默认上下编排 -->
                 <div class="w-full space-y-4">
-                    <!-- 上图：VRP 地图 -->
                     <div class="w-full">
                         <iframe src="assets/APP_VRP_B_V1_MAP.html" class="w-full rounded-lg shadow-sm" style="height: 600px; border: none;"></iframe>
                     </div>
         
-                    <!-- 下图：Cost Summary 表格 -->
                     <div class="w-full">
-                        <!-- 表格如果本身不大，高度可以调小一点 -->
                         <iframe src="assets/APP_VRP_B_V1_table.html" class="w-full rounded-lg shadow-sm" style="height: 350px; border: none;"></iframe>
                     </div>
                 </div>
             </div>
 
-        </div>
-        <!-- 注意：panel-proactive 已在此处闭合 -->
+        </div> <!-- ✅ 正确闭合 panel-proactive！ -->
 
-        <!-- 【新增】底部 Tab 切换按钮（现在它在外面了，无论哪个 Tab 激活都会显示） -->
+
+        <!-- ==================== 【底部 Tab 切换按钮】 ==================== -->
         <div class="flex justify-center space-x-4 mt-8 pt-6 border-t border-gray-200">
             <button id="btn-passive-bottom" onclick="switchTab('passive')" class="bg-blue-500 text-white px-8 py-3 rounded-full font-bold hover:bg-blue-600 transition">Passive Logistics Optimization</button>
             <button id="btn-proactive-bottom" onclick="switchTab('proactive')" class="bg-gray-300 text-gray-700 px-8 py-3 rounded-full font-bold hover:bg-gray-400 transition">Proactive Logistics Optimization</button>
         </div>
     </section>
-
 
 
     <!-- ========================================== -->
@@ -371,11 +358,9 @@
             Currently organizing details, tuned for updates. 
             </div>
             
-            <!-- Reserved for update -->
             <img src="assets/xx.png" alt="Reserved for update" class="w-full rounded-lg shadow-md">
         </div>
     </section>
-
 
     <!-- ========================================== -->
     <!-- 总结：对比不同Tab内容用的总结模块 -->
@@ -387,7 +372,6 @@
             Recalling the Decision Matrix—the ultimate Logistics Survival Playbook...<br>
             </div>
             
-            <!-- 图片占位符，预留 -->
             <img src="assets/4ways_to_cut_logisticss_cost.png" alt="4 ways to cut logistics cost" class="w-full rounded-lg shadow-md">
         </div>
     </section>
@@ -397,7 +381,7 @@
         <p>&copy; 2026 Fan's SCM Journey. All rights reserved.</p>
     </footer>
 
-    <!-- 【更新】Tab 切换脚本 (支持上下双 Tab 联动 & 平滑滚动) -->
+    <!-- Tab 切换脚本 (支持上下双 Tab 联动 & 平滑滚动) -->
     <script>
         function switchTab(tabName) {
             const passivePanel = document.getElementById('panel-passive');
@@ -445,7 +429,6 @@
             }
 
             // 切换后自动平滑滚动回 Tab 区域的顶部
-            // 避免用户点击底部按钮后，画面依然停留在底部的空白区域
             setTimeout(() => {
                 const targetSection = passivePanel.closest('section');
                 if (targetSection) {
