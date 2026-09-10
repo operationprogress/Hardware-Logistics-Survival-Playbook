@@ -1,0 +1,112 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>US RDC Deployment Map</title>
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+    <script src="https://unpkg.com/maplibre-gl@3.6.2/dist/maplibre-gl.js"></script>
+    <link href="https://unpkg.com/maplibre-gl@3.6.2/dist/maplibre-gl.css" rel="stylesheet" />
+    <style>
+        body { margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        #map { position: absolute; top: 0; bottom: 0; width: 100%; height: 100vh; }
+        #legend {
+            position: absolute; bottom: 30px; left: 30px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 15px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 10;
+        }
+        .legend-item { display: flex; align-items: center; margin-bottom: 5px; }
+        .color-box { width: 12px; height: 12px; margin-right: 8px; border-radius: 50%; }
+        .title-box {
+            position: absolute; top: 20px; left: 0; width: 100%;
+            text-align: center; pointer-events: none; z-index: 10;
+        }
+        .title-text {
+            display: inline-block; background: rgba(255, 255, 255, 0.9);
+            padding: 12px 24px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            font-weight: 600; font-size: 18px; color: #1f2937;
+        }
+        .maplibregl-popup { max-width: 300px; }
+        .popup-content { font-size: 14px; padding: 5px; }
+    </style>
+</head>
+<body>
+
+<div class="title-box"><div class="title-text">Multi-Customer RDC Deployment (3D Interactive Map)</div></div>
+
+<!-- 图例更新为仅使用代号 -->
+<div id="legend">
+    <div style="font-weight: bold; margin-bottom: 5px;">Customers</div>
+    <div class="legend-item"><div class="color-box" style="background: #e74c3c;"></div> Customer A</div>
+    <div class="legend-item"><div class="color-box" style="background: #3498db;"></div> Customer B</div>
+    <div class="legend-item"><div class="color-box" style="background: #2ecc71;"></div> Customer C</div>
+    <div style="margin-top: 8px; font-size: 12px; color: #666;">💡 Right-click and drag to rotate/tilt in 3D</div>
+</div>
+
+<div id="map"></div>
+
+<script>
+    const geoData = {"type": "FeatureCollection", "features": [{"type": "Feature", "geometry": {"type": "Point", "coordinates": [-121.7668, 38.6778]}, "properties": {"id": "a01", "demand": 20, "zip": "95776", "customer": "A", "duration": 4, "marker-size": 18, "marker-color": "#e74c3c"}}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [-117.2318, 33.8827]}, "properties": {"id": "a02", "demand": 20, "zip": "92551", "customer": "A", "duration": 4, "marker-size": 18, "marker-color": "#e74c3c"}}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [-95.3421, 29.9553]}, "properties": {"id": "a03", "demand": 20, "zip": "77032", "customer": "A", "duration": 4, "marker-size": 18, "marker-color": "#e74c3c"}}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [-96.8518, 32.4591]}, "properties": {"id": "a04", "demand": 20, "zip": "75167", "customer": "A", "duration": 4, "marker-size": 18, "marker-color": "#e74c3c"}}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [-94.4185, 39.2381]}, "properties": {"id": "a05", "demand": 20, "zip": "64068", "customer": "A", "duration": 4, "marker-size": 18, "marker-color": "#e74c3c"}}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [-88.903, 38.3171]}, "properties": {"id": "a06", "demand": 20, "zip": "62864", "customer": "A", "duration": 4, "marker-size": 18, "marker-color": "#e74c3c"}}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [-89.305, 43.244]}, "properties": {"id": "a07", "demand": 20, "zip": "53598", "customer": "A", "duration": 4, "marker-size": 18, "marker-color": "#e74c3c"}}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [-89.93, 35.053]}, "properties": {"id": "a08", "demand": 20, "zip": "38118", "customer": "A", "duration": 4, "marker-size": 18, "marker-color": "#e74c3c"}}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [-80.125, 26.941]}, "properties": {"id": "a09", "demand": 20, "zip": "33478", "customer": "A", "duration": 4, "marker-size": 18, "marker-color": "#e74c3c"}}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [-83.681, 34.176]}, "properties": {"id": "a10", "demand": 20, "zip": "30567", "customer": "A", "duration": 4, "marker-size": 18, "marker-color": "#e74c3c"}}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [-82.478, 34.617]}, "properties": {"id": "a11", "demand": 20, "zip": "29697", "customer": "A", "duration": 4, "marker-size": 18, "marker-color": "#e74c3c"}}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [-77.371, 37.773]}, "properties": {"id": "a12", "demand": 20, "zip": "23069", "customer": "A", "duration": 4, "marker-size": 18, "marker-color": "#e74c3c"}}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [-75.516, 40.599]}, "properties": {"id": "a13", "demand": 20, "zip": "18104", "customer": "A", "duration": 4, "marker-size": 18, "marker-color": "#e74c3c"}}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [-149.8793, 61.1954]}, "properties": {"id": "b01", "demand": 10, "zip": "99518", "customer": "B", "duration": 2, "marker-size": 12, "marker-color": "#3498db"}}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [-117.1599, 47.6827]}, "properties": {"id": "b02", "demand": 10, "zip": "99216", "customer": "B", "duration": 2, "marker-size": 12, "marker-color": "#3498db"}}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [-122.1877, 47.6224]}, "properties": {"id": "b03", "demand": 10, "zip": "98005", "customer": "B", "duration": 2, "marker-size": 12, "marker-color": "#3498db"}}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [-122.2292, 47.3045]}, "properties": {"id": "b04", "demand": 10, "zip": "98002", "customer": "B", "duration": 2, "marker-size": 12, "marker-color": "#3498db"}}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [-122.4796, 45.5422]}, "properties": {"id": "b05", "demand": 10, "zip": "97230", "customer": "B", "duration": 2, "marker-size": 12, "marker-color": "#3498db"}}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [-121.5417, 38.6504]}, "properties": {"id": "b06", "demand": 10, "zip": "95834", "customer": "B", "duration": 2, "marker-size": 12, "marker-color": "#3498db"}}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [-121.444, 37.7366]}, "properties": {"id": "b07", "demand": 10, "zip": "95376", "customer": "B", "duration": 2, "marker-size": 12, "marker-color": "#3498db"}}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [-117.8994, 33.9221]}, "properties": {"id": "b08", "demand": 10, "zip": "92821", "customer": "B", "duration": 2, "marker-size": 12, "marker-color": "#3498db"}}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [-117.7598, 33.6657]}, "properties": {"id": "b09", "demand": 10, "zip": "92618", "customer": "B", "duration": 2, "marker-size": 12, "marker-color": "#3498db"}}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [-112.253, 33.4414]}, "properties": {"id": "b10", "demand": 10, "zip": "85353", "customer": "B", "duration": 2, "marker-size": 12, "marker-color": "#3498db"}}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [-112.0939, 33.6799]}, "properties": {"id": "b11", "demand": 10, "zip": "85027", "customer": "B", "duration": 2, "marker-size": 12, "marker-color": "#3498db"}}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [-111.9168, 40.8516]}, "properties": {"id": "b12", "demand": 10, "zip": "84054", "customer": "B", "duration": 2, "marker-size": 12, "marker-color": "#3498db"}}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [-116.162, 43.5504]}, "properties": {"id": "b13", "demand": 10, "zip": "83716", "customer": "B", "duration": 2, "marker-size": 12, "marker-color": "#3498db"}}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [-116.3945, 43.6116]}, "properties": {"id": "b14", "demand": 10, "zip": "83642", "customer": "B", "duration": 2, "marker-size": 12, "marker-color": "#3498db"}}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [-104.8926, 39.7811]}, "properties": {"id": "b15", "demand": 10, "zip": "80216", "customer": "B", "duration": 2, "marker-size": 12, "marker-color": "#3498db"}}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [-95.3389, 29.6544]}, "properties": {"id": "b16", "demand": 10, "zip": "77075", "customer": "B", "duration": 2, "marker-size": 12, "marker-color": "#3498db"}}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [-97.2112, 33.0035]}, "properties": {"id": "b17", "demand": 10, "zip": "76262", "customer": "B", "duration": 2, "marker-size": 12, "marker-color": "#3498db"}}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [-87.8424, 41.9052]}, "properties": {"id": "b18", "demand": 10, "zip": "60164", "customer": "B", "duration": 2, "marker-size": 12, "marker-color": "#3498db"}}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [-76.7515, 38.8159]}, "properties": {"id": "b19", "demand": 10, "zip": "20772", "customer": "B", "duration": 2, "marker-size": 12, "marker-color": "#3498db"}}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [-76.8845, 40.2666]}, "properties": {"id": "b20", "demand": 10, "zip": "17101", "customer": "B", "duration": 2, "marker-size": 12, "marker-color": "#3498db"}}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [-73.941, 42.7948]}, "properties": {"id": "b21", "demand": 10, "zip": "12304", "customer": "B", "duration": 2, "marker-size": 12, "marker-color": "#3498db"}}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [-71.1862, 42.7298]}, "properties": {"id": "b22", "demand": 10, "zip": "01844", "customer": "B", "duration": 2, "marker-size": 12, "marker-color": "#3498db"}}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [-70.9708, 41.7696]}, "properties": {"id": "c01", "demand": 5, "zip": "02717", "customer": "C", "duration": 1, "marker-size": 8, "marker-color": "#2ecc71"}}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [-70.3116, 43.6415]}, "properties": {"id": "c02", "demand": 5, "zip": "04106", "customer": "C", "duration": 1, "marker-size": 8, "marker-color": "#2ecc71"}}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [-69.9768, 44.3078]}, "properties": {"id": "c03", "demand": 5, "zip": "04364", "customer": "C", "duration": 1, "marker-size": 8, "marker-color": "#2ecc71"}}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [-72.5582, 42.8506]}, "properties": {"id": "c04", "demand": 5, "zip": "05301", "customer": "C", "duration": 1, "marker-size": 8, "marker-color": "#2ecc71"}}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [-72.521, 41.7793]}, "properties": {"id": "c05", "demand": 5, "zip": "06040", "customer": "C", "duration": 1, "marker-size": 8, "marker-color": "#2ecc71"}}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [-74.2703, 41.3626]}, "properties": {"id": "c06", "demand": 5, "zip": "10918", "customer": "C", "duration": 1, "marker-size": 8, "marker-color": "#2ecc71"}}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [-73.7362, 42.4632]}, "properties": {"id": "c07", "demand": 5, "zip": "12156", "customer": "C", "duration": 1, "marker-size": 8, "marker-color": "#2ecc71"}}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [-77.2, 40.201]}, "properties": {"id": "c08", "demand": 5, "zip": "17013", "customer": "C", "duration": 1, "marker-size": 8, "marker-color": "#2ecc71"}}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [-77.2255, 40.195]}, "properties": {"id": "c09", "demand": 5, "zip": "17013", "customer": "C", "duration": 1, "marker-size": 8, "marker-color": "#2ecc71"}}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [-77.7278, 39.7909]}, "properties": {"id": "c10", "demand": 5, "zip": "17225", "customer": "C", "duration": 1, "marker-size": 8, "marker-color": "#2ecc71"}}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [-76.7277, 39.9626]}, "properties": {"id": "c11", "demand": 5, "zip": "17402", "customer": "C", "duration": 1, "marker-size": 8, "marker-color": "#2ecc71"}}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [-76.1955, 40.6856]}, "properties": {"id": "c12", "demand": 5, "zip": "17901", "customer": "C", "duration": 1, "marker-size": 8, "marker-color": "#2ecc71"}}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [-76.9454, 38.9559]}, "properties": {"id": "c13", "demand": 5, "zip": "20781", "customer": "C", "duration": 1, "marker-size": 8, "marker-color": "#2ecc71"}}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [-76.7762, 39.1422]}, "properties": {"id": "c14", "demand": 5, "zip": "20794", "customer": "C", "duration": 1, "marker-size": 8, "marker-color": "#2ecc71"}}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [-77.2232, 37.1257]}, "properties": {"id": "c15", "demand": 5, "zip": "23842", "customer": "C", "duration": 1, "marker-size": 8, "marker-color": "#2ecc71"}}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [-78.7567, 36.1335]}, "properties": {"id": "c16", "demand": 5, "zip": "27509", "customer": "C", "duration": 1, "marker-size": 8, "marker-color": "#2ecc71"}}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [-80.4728, 35.669]}, "properties": {"id": "c17", "demand": 5, "zip": "28146", "customer": "C", "duration": 1, "marker-size": 8, "marker-color": "#2ecc71"}}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [-78.6089, 35.3063]}, "properties": {"id": "c18", "demand": 5, "zip": "28334", "customer": "C", "duration": 1, "marker-size": 8, "marker-color": "#2ecc71"}}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [-80.572, 33.5307]}, "properties": {"id": "c19", "demand": 5, "zip": "29045", "customer": "C", "duration": 1, "marker-size": 8, "marker-color": "#2ecc71"}}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [-82.3102, 34.7787]}, "properties": {"id": "c20", "demand": 5, "zip": "29662", "customer": "C", "duration": 1, "marker-size": 8, "marker-color": "#2ecc71"}}]};
+
+    const map = new maplibregl.Map({
+        container: 'map',
+        style: 'https://demotiles.maplibre.org/style.json',
+        center: [-100.0, 38.0],
+        zoom: 3.5,
+        pitch: 45.0,
+        bearing: 0
+    });
+
+    map.on('load', () => {
+        map.addSource('rdc-points', {
+            type: 'geojson',
+            data: geoData
+        });
+
+        map.addLayer({
+            id: 'rdc-circles',
+            type: 'circle',
+            source: 'rdc-points',
+            paint: {
+                'circle-radius': ['get', 'marker-size'],
+                'circle-color': ['get', 'marker-color'],
+                'circle-opacity': 0.8,
+                'circle-stroke-width': 1,
+                'circle-stroke-color': '#ffffff'
+            }
+        });
+
+        const popup = new maplibregl.Popup({
+            closeButton: false,
+            closeOnClick: false
+        });
+
+        map.on('mouseenter', 'rdc-circles', (e) => {
+            map.getCanvas().style.cursor = 'pointer';
+            const feature = e.features[0];
+            const props = feature.properties;
+            const coordinates = feature.geometry.coordinates.slice();
+            
+            // 弹窗直接读取 props.customer，只显示 A, B, C 代号
+            const html = `
+                <div class="popup-content">
+                    <strong>RDC ID:</strong> ${props.id}<br>
+                    <strong>Customer:</strong> ${props.customer}<br>
+                    <strong>ZIP5:</strong> ${props.zip}<br>
+                    <strong>Demand:</strong> <span style="color: #ef4444; font-weight:bold;">${props.demand} units</span> <br>
+                    <strong>Deployment Duration:</strong> ${props.duration} weeks 
+                </div>
+            `;
+            
+            popup.setLngLat(coordinates).setHTML(html).addTo(map);
+        });
+
+        map.on('mouseleave', 'rdc-circles', () => {
+            map.getCanvas().style.cursor = '';
+            popup.remove();
+        });
+    });
+</script>
+</body>
+</html>

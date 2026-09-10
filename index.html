@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logistics Survival Playbook</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* 为了保持嵌入图表的交互性，统一设置iframe高度 */
+        .chart-iframe { width: 100%; height: 600px; border: 1px solid #ddd; border-radius: 8px; background: #fff; }
+        /* 页面平滑滚动 */
+        html { scroll-behavior: smooth; }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800 font-sans">
+
+    <!-- 页面头图：导航 -->
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <!-- 1. 外层容器加上 relative，并垂直居中 -->
+        <div class="container relative mx-auto px-6 py-4 flex flex-col items-center justify-center text-center gap-2">
+            <div class="text-2xl font-bold text-blue-600">Hardware Logistics Survival Playbook</div> 
+            <div class="text-gray-500 max-w-4xl">From surviving endless trade-offs where compromise isn't an option (on a tap-water budget) 
+                --> To driving rational, high-ROI trade-offs that power real growth.</div>
+            
+            <!-- 2. 邮箱绝对定位在右上角，避开长副标题 -->
+            <div class="md:absolute md:right-6 md:top-4 text-blue-500 font-medium cursor-pointer">
+                fan.he.2023@marshall.usc.edu
+            </div>
+        </div>
+    </header>
+
+    <!-- 模块1：Case Background -->
+    <section class="container mx-auto px-6 py-12">
+        <div class="bg-white p-8 rounded-xl shadow-sm">
+            <h2 class="text-2xl font-bold mb-4">Case Background</h2>
+            <div class="text-gray-700 leading-relaxed">
+            Assume a technology company is launching a flagship hardware product. 
+            Ahead of the nationwide GTM rollout, retail partners grant dedicated store windows to deploy branded display stands across targeted sites.
+            Once crated and palletized, each stand weighs 1,000 lbs and slightly exceeds standard U.S. pallet dimensions. 
+            Consequently, load capacity is capped at 20 units per container, whether using 40ft Intermodal containers or 53ft High-Cube Truckloads (FCL). 
+            </div>
+        </div>
+    </section>
+
+    <!-- 模块2：Demand Distribution - geography -->
+    <section class="container mx-auto px-6 py-12">
+        <div class="bg-white p-8 rounded-xl shadow-sm">
+            <h2 class="text-2xl font-bold mb-4">Start: Demand Distribution - Geography</h2>
+            <div class="text-gray-700 leading-relaxed mb-6">
+                <b>All order fulfillment start with customer demand. </b><br>
+                Below is a baseline sales pipeline dataset extracted from the CRM:<br>
+                Customer A: 13 sites, 20 units/site, 4-week deployment lead time per site.<br>
+                Customer B: 22 sites, 10 units/site, 2-week deployment lead time per site.<br>
+                Customer C: 20 sites, 5 units/site, 1-week deployment lead time per site.<br>
+                Exact geospatial coordinates (Latitude & Longitude) are captured for every site to drive route and modal optimization.<br>
+            </div>
+            
+            <!-- 可视化客户地理分布 -->
+            <h3 class="text-lg font-semibold mb-2">Map</h3>
+            <iframe src="assets/01_Sales_Pipeline.html" class="chart-iframe"></iframe>
+
+            <div class="mb-8 mt-6">
+            <!-- Table 客户数据 -->
+            <h3 class="text-lg font-semibold mb-2">Dataset</h3>
+            <iframe src="assets/ods_d01_all_cust_loc_table.html" class="chart-iframe" style="height: 300px;"></iframe>
+            </div>
+        </div>
+    </section>
+
+    <!-- 模块3：LTL COST Baseline -->
+    <section class="container mx-auto px-6 py-12">
+        <div class="bg-white p-8 rounded-xl shadow-sm">
+        <h2 class="text-2xl font-bold mb-4">End: Logistics Cost Baseline</h2>
+            <div class="mb-8"></div>
+            <!-- LTL 成本作为BASELINE 可视化 -->
+            <h3 class="text-lg font-semibold mb-2">LTL Cost as a Baseline</h3>
+            <div class="text-gray-700 leading-relaxed mb-6">
+                <b>Let's skip to the final outcome: the waybill statistics. </b><br>
+                Assuming a best-case scenario where 100% of these leads convert and ship, we establish a baseline using standard LTL and FCL to evaluate our logistics optimization tactics.<br>
+                Since Customer A's sites each require 20 units (meeting the FCL threshold), all 13 of its shipments go FCL. <br>
+                All remaining shipments for Accounts B and C default to LTL.<br>
+                Consequently, all <b>55 vehicles</b> were shipped, resulting in a <b>total logistics cost of $192,258</b> and an <b>average cost of $331 per unit</b>.<br>
+            </div>
+            <iframe src="assets/APP_VRP_Visualization_Baseline_V1.html" class="chart-iframe"></iframe>
+
+            <div class="mb-8 mt-6">
+                <!-- Table 物流rate card -->
+                <h3 class="text-lg font-semibold mb-2">3PL Rate Card (Estimated)</h3>
+                <div class="text-gray-700 leading-relaxed mb-6">
+                    <b>Dynamic Multi-Tier Rate Card Engine: </b><br>
+                    <b>-Standard Parameters:</b> 1,000 lbs/unit; 1 degree approx 69 miles.<br>
+                    <b>-Tiered Pricing:</b> Mileage-based brackets (Short/Medium/Long) across FCL/MTS, weight-tiered LTL (CWT), and Intermodal.<br>
+                    <b>-OD Dynamic Mapping</b>: Automatically matches Origin-Destination distances to pull precise unit rates for real-world cost modeling.<br>
+                </div>
+                <iframe src="assets/ods_d04_3pl_rate_card_table.html" class="chart-iframe" style="height: 300px;"></iframe>
+            </div>
+        </div>
+    </section>
+
+    <!-- 模块4：MINI IBP -->
+    <section class="container mx-auto px-6 py-12">
+        <div class="bg-white p-8 rounded-xl shadow-sm">
+            <h2 class="text-2xl font-bold mb-4">The Magic in the Middle: MINI IBP</h2>
+            <h3 class="text-lg font-semibold mb-2">A Typical IBP Workflow for ATO</h3>
+            <!-- 本地图片名称映射 -->
+            <img src="assets/IBP_ATO.png" alt="IBP ATO 图片" class="w-full rounded-lg shadow-md">
+            <div class="text-gray-700 leading-relaxed mb-6 mt-4">
+                Between capturing market leads and fulfilling orders, there lies a chain of critical processes and strategic decisions—ranging from 
+                <b>Product Lifecycle Management (PLM) and Go-To-Market (GTM) to Production Ramp-Up </b>. 
+                For our focus here, we will skip product design, iteration, Procure to Pay, Production,etc... and jump straight into Integrated Supply Planning.
+                As you can see, Integrated Business Planning (IBP) inherently involves numerous decision nodes. 
+                To keep things clean, let's zoom in on the few pivotal checkpoints highlighted with <b>lightbulb 💡 </b>icons: <br>
+                <b>-Constrained Supply: </b> Customer demand rarely aligns perfectly with supply over time. The primary role of an enterprise S&OP/SIOP process is to dynamically bridge this supply-demand gap.<br>
+                <b>-Order Sequencing: </b> From a global perspective, orders are scattered across multiple regions, channels, and accounts with varying strategic values. 
+                Sales and leadership must negotiate order priorities to resolve allocation conflicts—otherwise, downstream fulfillment execution grinds to a halt. <br>
+                <b>-ATP / CTP / Material Readiness: </b> Standard SIOP models handle aggregate time-series data at the SKU, SPU, or Product Mix level. Once order priorities are established, 
+                    individual order lines consume scheduled output according to their ranking. 
+                    This allows us to calculate the precise timestamp when materials are Ready-for-Logistics Processing. <br>
+                <b>-Deployment Run: </b> We further break down the execution into three functional sub-modules: <br>
+                    <b>--Deployment Scheduling:</b> Evaluates available, parallel deployment team capacity to define deployment windows. This determines the required Must-Ship-By Date and the resulting Shipment Float Time.<br>
+                    <b>--Intermodal Feasibility:</b> If the Shipment Float Time is sufficiently large, the system can switch to lower-cost Intermodal transport without compromising the final deployment schedule.<br>
+                    <b>--Consolidation Strategy:</b><br>
+                        <b>---Proactive Consolidation: </b> Uses optimal loading targets (e.g., forcing 100% FCL/MTS) to retroactively dictate deployment sequences, material allocation, and downstream decisions. 
+                        Even if a site has to wait, shipments only release when full container threshold is met. <br>
+                        <b>---Passive Consolidation: </b>Applies a flexible logistics posture—releasing orders as soon as loads are ready without holding up delivery schedules, while squeezing out freight cost savings on the fly.<br>
+            </div>
+    </section>
+
+    <!-- 模块5：Mini SIOP for Constrained Supply -->
+    <section class="container mx-auto px-6 py-12">
+        <div class="bg-white p-8 rounded-xl shadow-sm">
+            <h2 class="text-2xl font-bold mb-4">💡 Mini SIOP for Constrained Supply</h2>
+            <div class="text-gray-700 leading-relaxed mb-6">
+                Hardware demand follows a natural decay curve as it matures, while supply steadily builds up over time. Because of this, the NPI phase inherently represents the largest supply-demand gap. 
+                Allocation at this stage is a critical bottleneck that cannot be ignored—so it’s best to surface the trade-offs early and weigh the pros and cons transparently.
+            </div>
+            <iframe src="assets/02_Gap_between_demand_and_supply.html" class="chart-iframe"></iframe>
+        </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- 核心模块：Tab 切换区 (Passive vs Proactive) -->
+    <!-- ========================================== -->
+    <section class="container mx-auto px-6 py-12">
+        <div class="text-center mb-6">
+            <h2 class="text-3xl font-bold">Comparing the Two Tactical Options</h2>
+        </div>
+
+        <!-- 顶部 Tab 按钮 -->
+        <div class="flex justify-center space-x-4 mb-6">
+            <button id="btn-passive" onclick="switchTab('passive')" class="bg-blue-500 text-white px-8 py-3 rounded-full font-bold hover:bg-blue-600 transition">Passive Logistics Optimization</button>
+            <button id="btn-proactive" onclick="switchTab('proactive')" class="bg-gray-300 text-gray-700 px-8 py-3 rounded-full font-bold hover:bg-gray-400 transition">Proactive Logistics Optimization</button>
+        </div>
+
+        <!-- Passive 内容区 -->
+        <div id="panel-passive" class="bg-white p-8 rounded-xl shadow-sm space-y-8">
+            
+            <div class="space-y-6">
+                <h3 class="text-xl font-bold text-red-500">💡 Sequence of Deployment</h3>
+                <p class="text-gray-700">
+                    <b>Scenario 2: </b>The High-Entropy Sequence Problem <br>
+                    A subtle yet critical variable in this case is <b>Deployment Sequence</b>.<br>
+                    Imagine an <b> extreme scenario </b> where sequencing is dictated entirely by client-specific constraints: Account A requires East-to-West deployment (ZIP5 Ascending), 
+                    Account B demands West-to-East (ZIP5 Descending), and Account C requests East-to-West (ZIP5 Ascending). 
+                    To maintain project cadence, these orders are interleaved globally in a round-robin cycle (1×A -> 2×B -> 2×C). <br>
+                    Effective <b> shipment consolidation </b>requires two prerequisites: <b>geospatial proximity and synchronized material readiness</b>. Deployment sequencing dictates both. <br>
+                    In this scenario, order lines with matching readiness timestamps end up geographically scattered across the country. 
+                    This spatial divergence drastically shrinks our consolidation baseline, forcing shipment execution to collapse into pure LTL default.<br>
+                    (Detailed metrics are combined in the upcoming Material Readiness step to eliminate redundancy)
+                </p>
+            </div>
+
+            <div class="space-y-6">
+                <h3 class="text-xl font-bold">💡 Material Readiness</h3>
+                <p class="text-gray-700">
+                    <b> Material Readiness </b>is straight forward: order priorities simply consume constrained supply line-by-line. 
+                    To lay the groundwork for our downstream Gantt chart, we also calculate a few tightly coupled timestamps during this step: <br>
+                    -prod_qa_cmpl_wk: Timestamp when factory production passes QA inspection. <br>
+                    -wh_out_proc_time: Lead time required for warehouse inbound handling, packing, and palletization.<br>
+                    -load_rdy_wk: Timestamp when goods complete outbound staging and are fully ready for carrier pickup.<br>
+                </p>
+                 <iframe src="assets/S2_mat_rdy_table.html" class="chart-iframe" style="height: 300px;"></iframe>
+            </div>
+
+            <div class="space-y-6">
+                <h3 class="text-xl font-bold text-red-500">💡 Deployment Run - Deployment Scheduling</h3>
+                <p class="text-gray-700">
+                    Deployment Scheduling: The Balancing Act <br>
+                    Parallel to sequencing, Deployment Scheduling plays a crucial role in controlling operational cadence. 
+                    The constraint dynamics are straightforward:<br>
+                    <b>Under-capacity:</b> Cargo sits idle waiting for deployment teams.<br>
+                    <b>Over-capacity:</b> Deployment teams sit idle waiting for cargo readiness.<br>
+                    <b>Mismatched Timing:</b> Even with aligned overall capacity, localized temporal mismatches cause mutual waiting.<br>
+                     <br>
+                    To address this, we model deployment scheduling using a Parallel Machine Scheduling Algorithm across <b> 2, 3, and 4 concurrent teams </b>.<br>
+                    <b>Core Metrics:</b><br>
+                    <b>-deploy_mat_rdy_wk:</b> load_rdy_wk + 1 week (standard truck transit time).<br>
+                    <b>-Team Assignment:</b> Teams are available from Week 0. Orders consume the earliest available team based on priority, with a mandatory 1-week mandatory rest after 12 consecutive active weeks.<br>
+                    <b>-deploy_start_wk:</b> max(deploy_mat_rdy_wk, deploy_team_rdy_wk).<br>
+                    <b>-shipment_float_time (Cargo sits idle waiting for deployment teams):</b> deploy_start_wk - load_rdy_wk - LT_TRUCK.<br>
+                    <br>
+                    (We will analyze the impact of deployment team capacity on timelines in a later section. For now, let's keep driving our primary workflow forward: Logistics Cost Savings.)<br>
+                </p>
+            </div>
+
+            <div class="space-y-6">
+                <h3 class="text-xl font-bold">💡 Deployment Run - Intermodal Feasibility</h3>
+                <p class="text-gray-700">
+                <b>Leveraging Float Time for Freight Optimization </b> <br>
+                Shipment Float Time represents the waiting window created while orders await deployment team availability.<br>
+                <b>Intermodal Conversion Logic: </b> <br>
+                <b>-Time Window Constraint:</b> If Float Time >= 4 weeks, orders qualify for an Intermodal modal shift without impacting delivery schedules. <br>
+                <b>-Load Factor Check: </b>Intermodal incurs flat-container pricing; if utilization is too low, baseline LTL remains the cost-optimal choice. <br>
+                <br>
+                (Recall that in the previous step, we simulated 2, 3, and 4 concurrent deployment teams. In this module, 
+                we persisted scenario outputs both with and without Intermodal conversion (noting that Intermodal is only actionable under high shipment float times).
+                This yields a total of 6 distinct sub-scenarios (2 X 3) stored for downstream comparison.) <br>
+                </p>
+            </div>
+
+            <div class="space-y-6">
+                <h3 class="text-xl font-bold">💡 Deployment Run - Passive Consolidation</h3>
+                <p class="text-gray-700">
+                <b>Passive Strategy: Surgical Freight Optimization </b> <br>
+                Under a <b>Passive Logistics Strategy</b>, execution adopts a highly flexible, 
+                surgical posture: ship immediately upon load readiness by Must-Ship Date to protect delivery schedules, 
+                while capturing freight savings on the fly without forced consolidation waiting times. <br>
+                Recalling our simulation across 2, 3, and 4 concurrent deployment teams, team availability directly dictates the available tactical levers: <br>
+                <b> -2 Deployment Teams (High Float): </b>Severe capacity bottlenecks force cargo to wait, generating extensive shipment float time >= 4 weeks. 
+                This unlocks substantial Intermodal conversion opportunities. <br>
+                <b> -3 Deployment Teams (Balanced / Flexible):</b> Creates a textbook flexible logistics posture. 
+                With moderate wait times, execution dynamically splits across a balanced mix of FCL, Multi-Stop (MTS), LTL, and Intermodal. <br>
+                <b> - 4 Deployment Teams (Almost Zero Float): </b> Deployment capacity exceeds supply, meaning teams wait for goods to finish production. 
+                With almost zero float time created, Intermodal drops off the table, leaving MTS dynamic milk-runs as the primary consolidation tactic. <br>
+                </p>
+            </div>
+
+            <!-- 内嵌图表 -->
+            <div class="space-y-6">
+                <h3 class="text-xl font-bold">💡 Logistics Cost Analysis</h3>
+                <p class="text-gray-700">
+                Across the 6 simulated sub-scenarios, the <b>3-Team + Intermodal Enabled </b>strategy delivered the highest cost savings. <br>
+                Compared to the baseline, total logistics spend dropped <b>18.37% </b>(from $192,258 down to $156,947). <br>
+                Concurrently, total dispatches decreased from 55 to 46 shipments, validating the impact of consolidation. <br>
+                This optimization drove down the logistics unit cost by 18.13%, from $331 to $271 per unit. <br>
+                <br>
+                <b>-Counter-Intuitive Finding: Intermodal vs. MTS Savings </b> <br>
+                <b>--Unexpected Cost Gap:</b> Counter-intuitively, heavy Intermodal usage yields fewer logistics savings than Multi-Stop Truckload (MTS). <br>
+                <b>--The Flat-Rate Trap:</b> Intermodal charges flat container rates regardless of load factor. Low container utilization drives the effective unit cost higher than standard LTL rates. <br>
+                <b>-Backlog Feature Candidate (Load Optimization): </b><br>
+                --Test shifting orders with a Must-Ship-Date of T+1 forward to T to evaluate its impact on container utilization and overall cost savings.<br>
+                </p>
+                <div style="overflow-x: auto; width: 100%;"></div>
+                    <iframe src="assets/APP_VRP_Visualization_A.html" class="chart-iframe" style="height: 1000px;"></iframe>
+                </div>
+            </div>
+
+            <!-- 图片占位 -->
+            <div class="space-y-6">
+                <h3 class="text-xl font-bold">💡 Scheduling Gantt Chart</h3>
+                <p class="text-gray-700">
+                    Reserved for Gantt chart, updating soon.
+                </p>
+            </div>
+        </div>
+
+        <!-- Proactive 内容区 (默认隐藏) -->
+        <div id="panel-proactive" class="bg-white p-8 rounded-xl shadow-sm space-y-8 hidden">
+            
+            <div class="space-y-6">
+                <h3 class="text-xl font-bold">💡 Sequence of deployment</h3>
+                <p class="text-gray-700">
+                  <b>Scenario 1: Mathematical Optimization via VRP </b><br>
+                  At the <B>other extreme</B>, scheduling deployment strictly around optimal FCL and MTS logistics turns fulfillment into an integrated Vehicle Routing and Load Building Problem (VRP), 
+                  driving structural transportation efficiency by reducing total lane mileage while maximizing container capacity. <br>
+                  <b>-Load Breakdown: </b>Across the 580-unit demand pool, ideal 20-unit containerization bounds the fleet requirement to 29 full truckloads. 
+                  The table express both delivery sequence and explicit Order-Vehicle Assignments. <br>
+                  <b>-Real-World Friction:</b> While mathematically optimal, this model hinges on internal S&OP synchronization 
+                  and external customer concession to accept carrier-driven delivery schedules rather than fixed, client-preferred windows.<br>
+                </p>
+
+            </div>
+
+            <div class="space-y-6">
+                <h3 class="text-xl font-bold">💡 Material readiness</h3>
+                <p class="text-gray-700">
+                <b>Order Consumption & Vehicle Readiness Logic </b><br>
+                <b>Order-Level Supply Consumption: </b>Constrained supply is still consumed based on strict order priorities to establish individual material ready dates (load_rdy_wk). <br>
+                <b>Vehicle-Level Aggregation (vehicle_rdy_wk): </b> Because multi-stop consolidation (MTS) is active, readiness is aggregated to the container level. 
+                The model calculates a unified vehicle ready week (vehicle_rdy_wk)—triggered only when all consolidated orders within the load meet supply—to drive downstream routing and deployment scheduling.<br>
+                </p>
+                <iframe src="assets/S1_mat_rdy_table.html" class="chart-iframe" style="height: 300px;"></iframe>
+            </div>
+
+            <div class="space-y-6">
+                <h3 class="text-xl font-bold">💡 Deployment run - Deployment Scheduling</h3>
+                <p class="text-gray-700">
+                 <b>Skip detailed calculation for now:</b><br>
+                 While deployment capacity dictates overall fulfillment lead times, our immediate model focuses strictly on evaluating total cost trade-offs, skipping fine-grained scheduling mechanics for now.<br>
+                 
+                 <b>Constraines need to be aware:</b><br>
+                 The Capacity Bottleneck & Split Penalty: When the number of site drops in a single vehicle exceeds the active deployment crew count, the shipment must be split across execution phases.<br>
+                 Example: Delivering 4 site orders in a single truckload when only 3 deployment teams are available creates site idleness. Arriving ahead of crew capacity adds unnecessary holding and staging costs, thereby inflating total logistics cost.<br>
+                </p>
+            </div>
+
+            <div class="space-y-6">
+                <h3 class="text-xl font-bold">💡 Deployment Run - Intermodal Feasibility</h3>
+                <p class="text-gray-700">
+                <b>Skip detailed calculation for now: </b> <br>
+                Note on Intermodal Optimization: While Intermodal transport yields further freight cost reductions, this calculation is optional. 
+                You may safely skip this step if your scope is limited to baseline Truckload FCL and MTS cost savings.
+                </p>
+            </div>
+
+            <div class="space-y-6">
+                <h3 class="text-xl font-bold">💡 Deployment Run - Proactive Consolidation</h3>
+                <p class="text-gray-700">
+                    Proactive Consolidation is executed prior to the sequencing step (Sequence of Deployment).
+                </p>
+            </div>
+
+            <!-- Proactive 特有的图表 -->
+            <div class="space-y-6">
+                <h3 class="text-xl font-bold">💡 Logistics Cost Analysis</h3>
+                <p class="text-gray-700">
+                <B>Theoretical Best-Case Scenario (580 pcs / 29 Trucks)</B> <br>
+                Under an extreme ideal state—consolidating 580 units across 29 full FCL/MTS loads—total logistics spend dropped <B>28.25%</B> (from $192,258 down to $137,951).<br>
+                This ultimate load optimization drove down the unit cost by 28.10%, reducing per-unit freight from $331 to $238. <br>
+                <br>
+                Aligning deployment schedules with customer site availability presents the core operational hurdle.
+                In practice, performance will most likely fall between Scenario 1 and Scenario 2.
+                Rather than relying on a rigid baseline, we can derive the dynamic dispatch sequence based on the realistic level of proactive consolidation achievable on the ground.
+                </p>
+
+                <!-- 默认上下编排 -->
+                <div class="w-full space-y-4">
+                    <!-- 上图：VRP 地图 -->
+                    <div class="w-full">
+                        <iframe src="assets/APP_VRP_B_V1_MAP.html" class="w-full rounded-lg shadow-sm" style="height: 600px; border: none;"></iframe>
+                    </div>
+        
+                    <!-- 下图：Cost Summary 表格 -->
+                    <div class="w-full">
+                        <!-- 表格如果本身不大，高度可以调小一点 -->
+                        <iframe src="assets/APP_VRP_B_V1_table.html" class="w-full rounded-lg shadow-sm" style="height: 350px; border: none;"></iframe>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <!-- 注意：panel-proactive 已在此处闭合 -->
+
+        <!-- 【新增】底部 Tab 切换按钮（现在它在外面了，无论哪个 Tab 激活都会显示） -->
+        <div class="flex justify-center space-x-4 mt-8 pt-6 border-t border-gray-200">
+            <button id="btn-passive-bottom" onclick="switchTab('passive')" class="bg-blue-500 text-white px-8 py-3 rounded-full font-bold hover:bg-blue-600 transition">Passive Logistics Optimization</button>
+            <button id="btn-proactive-bottom" onclick="switchTab('proactive')" class="bg-gray-300 text-gray-700 px-8 py-3 rounded-full font-bold hover:bg-gray-400 transition">Proactive Logistics Optimization</button>
+        </div>
+    </section>
+
+
+
+    <!-- ========================================== -->
+    <!-- 数仓解决方案架构&数据模型-->
+    <!-- ========================================== -->
+    <section class="container mx-auto px-6 py-12">
+        <div class="bg-white p-8 rounded-xl shadow-sm">
+            <h2 class="text-2xl font-bold mb-4">Data Warehouse Architecture & Data Model</h2>
+            <div class="text-gray-700 leading-relaxed mb-6">
+            Architected a lightweight IBP simulator utilizing a multi-layered data warehouse (ODS,DWD,DWS,APP) approach. <br>
+            Currently organizing details, tuned for updates. 
+            </div>
+            
+            <!-- Reserved for update -->
+            <img src="assets/xx.png" alt="Reserved for update" class="w-full rounded-lg shadow-md">
+        </div>
+    </section>
+
+
+    <!-- ========================================== -->
+    <!-- 总结：对比不同Tab内容用的总结模块 -->
+    <!-- ========================================== -->
+    <section class="container mx-auto px-6 py-12">
+        <div class="bg-white p-8 rounded-xl shadow-sm">
+            <h2 class="text-2xl font-bold mb-4">Conclusion</h2>
+            <div class="text-gray-700 leading-relaxed mb-6">
+            Recalling the Decision Matrix—the ultimate Logistics Survival Playbook...<br>
+            </div>
+            
+            <!-- 图片占位符，预留 -->
+            <img src="assets/4ways_to_cut_logisticss_cost.png" alt="4 ways to cut logistics cost" class="w-full rounded-lg shadow-md">
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="bg-gray-800 text-white py-8 text-center">
+        <p>&copy; 2026 Fan's SCM Journey. All rights reserved.</p>
+    </footer>
+
+    <!-- 【更新】Tab 切换脚本 (支持上下双 Tab 联动 & 平滑滚动) -->
+    <script>
+        function switchTab(tabName) {
+            const passivePanel = document.getElementById('panel-passive');
+            const proactivePanel = document.getElementById('panel-proactive');
+            
+            // 获取顶部的按钮
+            const btnPassiveTop = document.getElementById('btn-passive');
+            const btnProactiveTop = document.getElementById('btn-proactive');
+            
+            // 获取底部的按钮
+            const btnPassiveBottom = document.getElementById('btn-passive-bottom');
+            const btnProactiveBottom = document.getElementById('btn-proactive-bottom');
+
+            // 定义激活和非激活状态的 class
+            const activeClasses = ['bg-blue-500', 'text-white'];
+            const inactiveClasses = ['bg-gray-300', 'text-gray-700'];
+
+            // 样式切换辅助函数
+            function setActive(btn) {
+                btn.classList.remove(...inactiveClasses);
+                btn.classList.add(...activeClasses);
+            }
+            function setInactive(btn) {
+                btn.classList.remove(...activeClasses);
+                btn.classList.add(...inactiveClasses);
+            }
+
+            // 切换逻辑
+            if (tabName === 'passive') {
+                passivePanel.classList.remove('hidden');
+                proactivePanel.classList.add('hidden');
+                
+                setActive(btnPassiveTop);
+                setActive(btnPassiveBottom);
+                setInactive(btnProactiveTop);
+                setInactive(btnProactiveBottom);
+            } else {
+                proactivePanel.classList.remove('hidden');
+                passivePanel.classList.add('hidden');
+                
+                setActive(btnProactiveTop);
+                setActive(btnProactiveBottom);
+                setInactive(btnPassiveTop);
+                setInactive(btnPassiveBottom);
+            }
+
+            // 切换后自动平滑滚动回 Tab 区域的顶部
+            // 避免用户点击底部按钮后，画面依然停留在底部的空白区域
+            setTimeout(() => {
+                const targetSection = passivePanel.closest('section');
+                if (targetSection) {
+                    targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }, 50); 
+        }
+    </script>
+</body>
+</html>

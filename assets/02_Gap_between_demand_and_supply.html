@@ -1,0 +1,102 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Demand vs Supply (52 Weeks)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        body { font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #f8f9fa; padding: 20px; }
+        .container {
+            max-width: 1200px; margin: 0 auto; background: white;
+            border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            padding: 30px;
+        }
+        h2 { text-align: center; color: #333; margin-bottom: 20px; }
+        .chart-container { position: relative; height: 550px; width: 100%; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>📊 52-Week Total Demand vs. Constrained Supply</h2>
+    <div class="chart-container">
+        <canvas id="compareChart"></canvas>
+    </div>
+</div>
+
+<script>
+    const weeks = ["Wk-1", "Wk-2", "Wk-3", "Wk-4", "Wk-5", "Wk-6", "Wk-7", "Wk-8", "Wk-9", "Wk-10", "Wk-11", "Wk-12", "Wk-13", "Wk-14", "Wk-15", "Wk-16", "Wk-17", "Wk-18", "Wk-19", "Wk-20", "Wk-21", "Wk-22", "Wk-23", "Wk-24", "Wk-25", "Wk-26", "Wk-27", "Wk-28", "Wk-29", "Wk-30", "Wk-31", "Wk-32", "Wk-33", "Wk-34", "Wk-35", "Wk-36", "Wk-37", "Wk-38", "Wk-39", "Wk-40", "Wk-41", "Wk-42", "Wk-43", "Wk-44", "Wk-45", "Wk-46", "Wk-47", "Wk-48", "Wk-49", "Wk-50", "Wk-51", "Wk-52"];
+    const demandData = [40, 10, 20, 10, 40, 10, 20, 10, 40, 10, 10, 0, 30, 0, 10, 0, 30, 0, 10, 0, 30, 0, 10, 0, 30, 0, 10, 0, 30, 0, 10, 0, 30, 0, 10, 0, 30, 0, 10, 0, 20, 0, 0, 0, 20, 0, 0, 0, 20, 0, 0, 0];
+    const supplyData = [5, 5, 5, 5, 10, 10, 10, 10, 15, 15, 15, 15, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20];
+
+    const ctx = document.getElementById('compareChart').getContext('2d');
+    const compareChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: weeks,
+            datasets: [
+                {
+                    label: 'Total Demand (Units)',
+                    data: demandData,
+                    backgroundColor: 'rgba(239, 68, 68, 0.2)', // 浅红色填充
+                    borderColor: 'rgba(239, 68, 68, 1)',
+                    borderWidth: 2,
+                    pointRadius: 2,
+                    pointHoverRadius: 6,
+                    tension: 0.1,
+                    fill: true
+                },
+                {
+                    label: 'Total Supply (Units)',
+                    data: supplyData,
+                    backgroundColor: 'rgba(59, 130, 246, 0.2)', // 浅蓝色填充
+                    borderColor: 'rgba(59, 130, 246, 1)',
+                    borderWidth: 2,
+                    pointRadius: 2,
+                    pointHoverRadius: 6,
+                    tension: 0.1,
+                    fill: true
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            interaction: {
+                mode: 'index',
+                intersect: false,
+            },
+            plugins: {
+                legend: { position: 'top' },
+                tooltip: {
+                    callbacks: {
+                        title: function(items) {
+                            return items[0].label;
+                        },
+                        label: function(context) {
+                            return `${context.dataset.label}: ${context.parsed.y} units`;
+                        }
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    ticks: {
+                        // 52个标签每隔4周显示一个，防止挤在一起
+                        callback: function(value, index, ticks) {
+                            return index % 4 === 0 ? this.getLabelForValue(value) : '';
+                        },
+                        maxTicksLimit: 20
+                    }
+                },
+                y: {
+                    beginAtZero: true,
+                    title: { display: true, text: 'Units' }
+                }
+            }
+        }
+    });
+</script>
+</body>
+</html>
