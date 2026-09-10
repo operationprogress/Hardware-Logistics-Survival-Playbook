@@ -192,24 +192,36 @@
 
         </div>
 
+
         <!-- ==================== 4. The Magic in the Middle: MINI IBP (居中核心) ==================== -->
         <section id="section-magic" class="scroll-mt-24 bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 rounded-3xl p-6 md:p-10 shadow-2xl border border-indigo-500/30 text-white relative overflow-hidden">
             <div class="absolute -top-24 -right-24 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl pointer-events-none"></div>
             <div class="absolute -bottom-24 -left-24 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl pointer-events-none"></div>
 
             <div class="relative z-10 mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-indigo-500/20 pb-6">
-                <div>
-                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-purple-500/20 text-purple-300 border border-purple-500/30 mb-2">
+                <!-- 删除了 max-w-4xl，使文字自由铺满 -->
+                <div class="space-y-2 w-full">
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-purple-500/20 text-purple-300 border border-purple-500/30 mb-1">
                         Interactive Architecture Map
                     </span>
                     <h2 class="text-3xl font-extrabold tracking-tight text-white">
                         The Magic in the Middle: MINI IBP
                     </h2>
-                    <p class="text-indigo-200/80 text-sm mt-1">
-                        Solution Architecture for Assembly-to-Order / Configure-to-Order. Click the glowing nodes to inspect specific planning strategies.
+                    <p class="text-indigo-200/90 text-sm leading-relaxed w-full">
+                        Between capturing market leads and fulfilling orders, there lies a chain of critical processes and strategic decisions—ranging from 
+                        <strong class="text-white font-semibold">Product Lifecycle Management (PLM) and Go-To-Market (GTM) to Production Ramp-Up</strong>. 
+                        For our focus here, we will skip upstream execution (PLM, Procure-to-Pay, Shop Floor Assembly) and jump straight into Integrated Supply Planning.
+                    </p>
+                    <p class="text-indigo-200/80 text-xs sm:text-sm leading-relaxed w-full pt-1">
+                        Integrated Business Planning (IBP) inherently involves numerous decision nodes. 
+                        To keep things focused, let's zoom in on the core checkpoints marked with 
+                        <span class="inline-flex items-center px-2 py-0.5 rounded bg-amber-400/20 text-amber-300 font-bold text-xs">💡 Lightbulb</span> icons:
                     </p>
                 </div>
             </div>
+
+
+
 
             <div class="relative w-full rounded-2xl overflow-hidden border border-indigo-500/30 bg-slate-950/80 shadow-2xl">
                 <img src="assets/IBP_ATO.jpeg" alt="Mini IBP Solution Architecture" class="w-full h-auto object-contain min-h-[500px]">
